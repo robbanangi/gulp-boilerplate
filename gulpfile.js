@@ -8,7 +8,7 @@ browserSync = require('browser-sync'),
 plumber = require('gulp-plumber'),
 reload = browserSync.reload;
 
-//* Gulp tasks for different properties x *//
+//* Gulp tasks for different properties *//
 		gulp.task('browser-sync', function(){
 			browserSync({
 
@@ -21,27 +21,27 @@ reload = browserSync.reload;
 
 		gulp.task('jade', function(){
 				return gulp.src('src/views/*.jade')
-				.pipe(plumber())
+				.pipe(plumber()) // Very important //
 				.pipe(jade())
-				.pipe(plumber.stop())
+				.pipe(plumber.stop()) // Very important //
 				.pipe(gulp.dest('_site'))
 				.pipe(reload({stream:true}))
 			});
 
 		gulp.task('sass', function(){
 				return gulp.src('src/scss/**/*.scss')
-				.pipe(plumber())
+				.pipe(plumber()) // Very important //
 				.pipe(sass())
-				.pipe(plumber.stop())
+				.pipe(plumber.stop()) // Very important //
 				.pipe(gulp.dest('_site/assets/css/'))
 				.pipe(reload({stream:true}))
 			});
 
 		gulp.task('script', function() {
 			return gulp.src('src/js/*.js')
-			.pipe(plumber())
+			.pipe(plumber()) // Very important //
 			.pipe(concat('script.js'))
-			.pipe(plumber.stop())
+			.pipe(plumber.stop()) // Very important //
 			.pipe(gulp.dest('_site/assets/js/'))
 		
 		});
@@ -49,7 +49,7 @@ reload = browserSync.reload;
 
 		gulp.task('watch', function() {
 
-				gulp.watch('src/views/**/*.jade', ['jade'])
+				gulp.watch('src/views/**/*.jade', ['jade']) // ( Very important ) //
 				gulp.watch('src/scss/**/*.scss', ['sass'])
 				gulp.watch('src/js/*.js', ['script'])
 
