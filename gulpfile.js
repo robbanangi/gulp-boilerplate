@@ -8,7 +8,7 @@ browserSync = require('browser-sync'),
 plumber = require('gulp-plumber'),
 reload = browserSync.reload;
 
-//* Gulp tasks for different properties *//
+//* Gulp tasks for different properties x *//
 		gulp.task('browser-sync', function(){
 			browserSync({
 
