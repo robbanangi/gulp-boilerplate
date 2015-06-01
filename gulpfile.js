@@ -1,60 +1,62 @@
-// Npm installs and properties //
-
 var gulp = require('gulp'),
 jade = require('gulp-jade'),
 sass = require('gulp-sass'),
 browserSync = require('browser-sync'),
-plumber = require('gulp-plumber'),
-concat = require('gulp-concat'),
+reload = browserSync.reload;
 imagemin = require('gulp-imagemin'),
-reload = browserSync.reload,
-uglify = require('gulp-uglify');
+concat = require('gulp-concat'),
+plumber = require('gulp-plumber');
 
 
-// Gulp tasks for our Npm installs and properties! //
-
-
-		gulp.task('browser-sync', function() {
-    			browserSync ({
-        				server: {
-            		baseDir: "_site"
-        		}
-    		});
+	gulp.task('browser-sync', function(){
+		browserSync({
+				server: {
+					baseDir: "_site"
+				}
 		});
+	});
 
+	gulp.task('jade', function(){
+		return gulp.src('src/views/*.jade')
+		.pipe(plumber())
+		.pipe(jade())
+		.pipe(gulp.dest('_site'))
+		.pipe(reload({stream:true}))
 
-		gulp.task('jade', function(){
-				return gulp.src('src/views/*.jade')
-				.pipe(plumber())
-				.pipe(jade())
-				.pipe(plumber.stop())
-				.pipe(gulp.dest('_site'))
-				.pipe(reload({stream:true}))
-		});
+	});
 
 		gulp.task('sass', function(){
-				return gulp.src('src/scss/**/*.scss')
-				.pipe(plumber())
-				.pipe(sass())
-				.pipe(plumber.stop())
-				.pipe(gulp.dest('_site/assets/css/'))
-				.pipe(reload({stream:true}))
-		});
+		return gulp.src('src/scss/**/*.scss')
+		.pipe(plumber())
+		.pipe(sass())
+		.pipe(plumber.stop())
+		.pipe(gulp.dest('_site/assets/css/'))
+		.pipe(reload({stream:true}))
 
+	});
+
+		gulp.task('imagemin', function(){
+			return gulp.src(['src/img/*.{png,jpg,gif}'])
+			.pipe(imagemin({
+				optimizationLevel: 2,
+				progressive:true,
+				interlaced: true
+			}))
+			.pipe(gulp.dest('_site/assets/img/'))
+		});
 
 		gulp.task('concat', function(){
-				return gulp.src('src/js/*.js')
-				.pipe(concat('script.js'))
-				.pipe(uglify())
-				.pipe(gulp.dest('_site/assets/js/'))
+			return gulp.src('src/js/*.js')
+			.pipe(concat('script.js'))
+			.pipe(gulp.dest('_site/assets/js/'))
 		});
 
-		gulp.task('watch', function() {
-				gulp.watch('src/views/*.jade', ['jade'])
-				gulp.watch('src/scss/**/*.scss', ['sass'])
-				gulp.watch('src/js/*.js', ['concat'])
-		});
 
-		gulp.task('default', ['jade', 'sass', 'concat', 'watch', 'browser-sync'], function(){
+		gulp.task('watch', function(){
+			gulp.watch('src/views/*.jade', ['jade'])
+			gulp.watch('src/scss/**/*.scss', ['sass'])
+			gulp.watch('src/js/*.js', ['concat'])
 
-		});
+			});
+
+		gulp.task('default', ['browser-sync', 'jade', 'sass', 'imagemin', 'concat', 'watch'], function(){});
